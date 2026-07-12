@@ -21,19 +21,27 @@
     --cyan:#1fe8ff;
     --impact:#ff3d2e;
     --gold:#ffc53d;
-    --paper:#f2f4fa;
+    --paper:#f2f4fa;    
     --grey:#8a92a8;
     --line: rgba(255,255,255,0.08);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--ink);
-    color:var(--paper);
-    font-family:'Noto Sans TC', sans-serif;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
-  }
+  /* 【手機版升級】優化觸控體驗與防呆 */
+html {
+    /* 讓點擊錨點連結時的捲動變得平滑，不會瞬間跳轉 */
+    scroll-behavior: smooth; 
+}
+
+body {
+    /* 移除手機版點擊物件時預設的藍色/灰色閃爍框 */
+    -webkit-tap-highlight-color: transparent; 
+}
+
+/* 讓按鈕和卡片不會因為連續點擊而觸發文字選取（反白） */
+.cta-btn, .card, .hud-unit {
+    user-select: none; 
+    -webkit-user-select: none;
+}
   .display{
     font-family:'Anton','Noto Sans TC', sans-serif;
     letter-spacing:0.02em;
@@ -404,15 +412,20 @@
   <footer>花蓮親子週 × 市長盃極限陀螺大賽　|　花蓮市中正體育館</footer>
 
 <script>
-  // radial speed lines
-  const burst = document.getElementById('burst');
-  const n = 24;
-  for(let i=0;i<n;i++){
+  // 【升級版】radial speed lines (放射線殘影特效)
+const burst = document.getElementById('burst');
+const n = 36; // 增加線條數量讓細節更豐富 (原本是24)
+for(let i=0;i<n;i++){
     const s = document.createElement('span');
     s.style.transform = `rotate(${(360/n)*i}deg)`;
-    s.style.animationDelay = `${-(i*0.6)}s`;
+    // 使用隨機延遲，避免動畫看起來太呆板
+    s.style.animationDelay = `${-(Math.random() * 5)}s`; 
+    // 隨機動態生成長度與透明度，創造 3D 空間感
+    const length = 35 + Math.random() * 25; 
+    s.style.height = `${length}%`;
+    s.style.opacity = 0.3 + Math.random() * 0.7;
     burst.appendChild(s);
-  }
+}
 
   // countdown to 2026-07-13 16:00 (Asia/Taipei, UTC+8)
   const target = new Date('2026-07-13T16:00:00+08:00').getTime();
